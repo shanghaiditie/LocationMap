@@ -82,6 +82,7 @@ public class MainActivity extends Activity {
 		Button bn = (Button) findViewById(R.id.loc);
 		final TextView latTv = (TextView) findViewById(R.id.lat);
 		final TextView lngTv = (TextView) findViewById(R.id.lng);
+
 		bn.setOnClickListener(new View.OnClickListener()
 		{
 			@Override
@@ -160,6 +161,12 @@ public class MainActivity extends Activity {
 	private void updatePosition(Location location)
 	{
 		LatLng pos = new LatLng(location.getLatitude(), location.getLongitude());
+		final TextView latTv = (TextView) findViewById(R.id.lat);
+		final TextView lngTv = (TextView) findViewById(R.id.lng);
+
+		latTv.setText(location.getLatitude()+"\n");
+		lngTv.setText(location.getLongitude()+"\n");
+
 		// 创建一个设置经纬度的CameraUpdate
 		CameraUpdate cu = CameraUpdateFactory.changeLatLng(pos);
 		// 更新地图的显示区域
