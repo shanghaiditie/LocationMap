@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
 					// 通过监听器监听GPS提供的定位信息的改变
 					locationManager.requestLocationUpdates(
 							LocationManager.GPS_PROVIDER,
-							300, 8 , new LocationListener()
+							3000, 8 , new LocationListener()
 							{
 								@Override
 								public void onLocationChanged(Location loc)
@@ -89,6 +89,8 @@ public class MainActivity extends Activity {
 			public void onClick(View v)
 			{
 				// 获取用户输入的经度、纬度值
+				((RadioButton)findViewById(R.id.manual)).setChecked(true);
+
 				String lng = lngTv.getEditableText().toString().trim();
 				String lat = latTv.getEditableText().toString().trim();
 				if (lng.equals("") || lat.equals(""))
@@ -98,8 +100,10 @@ public class MainActivity extends Activity {
 				}
 				else
 				{
+					Toast.makeText(MainActivity.this, "目前的经度是：" + lng + ", 纬度是："+ lat,
+							Toast.LENGTH_SHORT).show();
 					// 设置根据用户输入的地址定位
-					((RadioButton)findViewById(R.id.manual)).setChecked(true);
+					//((RadioButton)findViewById(R.id.manual)).setChecked(true);
 					double dLng = Double.parseDouble(lng);
 					double dLat = Double.parseDouble(lat);
 					// 将用户输入的经、纬度封装成LatLng
@@ -107,15 +111,18 @@ public class MainActivity extends Activity {
 					// 创建一个设置经纬度的CameraUpdate
 					CameraUpdate cu = CameraUpdateFactory.changeLatLng(pos);  // ②
 					// 更新地图的显示区域
+
 					aMap.moveCamera(cu);  // ③
+					aMap.moveCamera(CameraUpdateFactory.zoomTo(12));
+					
 					// 创建MarkerOptions对象
 					MarkerOptions markerOptions = new MarkerOptions();
 					// 设置MarkerOptions的添加位置
 					markerOptions.position(pos);
 					// 设置MarkerOptions的标题
-					markerOptions.title("疯狂软件教育中心");
+					markerOptions.title("目前地址");
 					// 设置MarkerOptions的摘录信息
-					markerOptions.snippet("专业的Java、iOS培训中心");
+					markerOptions.snippet("测试");
 					// 设置MarkerOptions的图标
 					markerOptions.icon(BitmapDescriptorFactory
 							.defaultMarker(BitmapDescriptorFactory.HUE_RED));
@@ -125,9 +132,9 @@ public class MainActivity extends Activity {
 					marker.showInfoWindow(); // 设置默认显示信息窗
 					// 创建MarkerOptions、并设置它的各种属性
 					MarkerOptions markerOptions1 = new MarkerOptions();
-					markerOptions1.position(new LatLng(dLat + 0.001, dLng))
+					markerOptions1.position(new LatLng(dLat + 0.0001, dLng))
 							// 设置标题
-							.title("疯狂软件教育中心学生食堂")
+							.title("上偏移地址")
 							.icon(BitmapDescriptorFactory
 									.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
 							.draggable(true);
@@ -141,10 +148,10 @@ public class MainActivity extends Activity {
 							.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
 					// 在创建一个MarkerOptions、并设置它的各种属性
 					MarkerOptions markerOptions2 = new MarkerOptions()
-							.position(new LatLng(dLat - 0.001, dLng))
+							.position(new LatLng(dLat - 0.0001, dLng))
 									// 为MarkerOptions设置多个图标
 							.icons(giflist)
-							.title("疯狂软件教育中心学生宿舍")
+							.title("下偏移地址")
 							.draggable(true)
 									// 设置图标的切换频率
 							.period(10);
